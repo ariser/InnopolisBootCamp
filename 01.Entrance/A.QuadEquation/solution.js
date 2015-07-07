@@ -28,7 +28,9 @@
     b = parseFloat(this.b.value);
     c = parseFloat(this.c.value);
 
-    if (a === 0) {
+    if (isNaN(a + b + c)) {
+      solution = 'Invalid input data.';
+    } else if (a === 0) {
       solution = "The first coefficient can't be equal to 0.";
     } else {
       discriminant = Math.pow(b, 2) - 4 * a * c;
