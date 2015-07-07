@@ -1,8 +1,8 @@
 (function () {
   'use strict';
 
-  function QuadEquation(form) {
-    if (!(this instanceof QuadEquation)) {
+  function QuadraticEquation(form) {
+    if (!(this instanceof QuadraticEquation)) {
       throw new Error('Missing "new" keyword.');
     }
 
@@ -18,7 +18,7 @@
     }.bind(this));
   }
 
-  QuadEquation.prototype.solve = function () {
+  QuadraticEquation.prototype.solve = function () {
     var a, b, c,
         discriminant,
         roots,
@@ -58,6 +58,6 @@
 
   window.onload = function () {
     var form = document.forms.equation;
-    new QuadEquation(form);
+    new QuadraticEquation(form);
   }
 })();
