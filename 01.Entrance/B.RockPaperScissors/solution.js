@@ -96,7 +96,7 @@
     }
 
     if (isNaN(roundsNumber) || roundsNumber === '') {
-      throw new TypeError('Invalid 1 argument to Contest');
+      throw new TypeError('Rounds number must be... a number');
     }
 
     this.roundsNumber = parseInt(roundsNumber);
@@ -196,25 +196,29 @@
 
       output.innerHTML = '';
 
-      var contest = new Contest(input.value);
+      try {
+        var contest = new Contest(input.value);
 
-      contest.subscribe('playersInited', function (players) {
-        output.innerHTML += '<p>' +
-        players.map(function (player) {
-          return 'Player ' + player.name + ': ' + player.strategyName;
-        }).join('<br>') +
-        '</p>';
-      });
+        contest.subscribe('playersInited', function (players) {
+          output.innerHTML += '<p>' +
+          players.map(function (player) {
+            return 'Player ' + player.name + ': ' + player.strategyName;
+          }).join('<br>') +
+          '</p>';
+        });
 
-      contest.subscribe('roundStart', function (roundIndex, isLast) {
-        output.innerHTML += isLast ? '<h4>Final</h4>' : '<h4>Round ' + roundIndex + '</h4>';
-      });
+        contest.subscribe('roundStart', function (roundIndex, isLast) {
+          output.innerHTML += isLast ? '<h4>Final</h4>' : '<h4>Round ' + roundIndex + '</h4>';
+        });
 
-      contest.subscribe('roundPlayed', function (playerOne, playerTwo, winner) {
-        output.innerHTML += '<p>Player ' + playerOne.name + ' vs Player ' + playerTwo.name + '. Player ' + winner.name + ' wins!';
-      });
+        contest.subscribe('roundPlayed', function (playerOne, playerTwo, winner) {
+          output.innerHTML += '<p>Player ' + playerOne.name + ' vs Player ' + playerTwo.name + '. Player ' + winner.name + ' wins!';
+        });
 
-      contest.play();
+        contest.play();
+      } catch (e) {
+        output.innerHTML = e.message;
+      }
     });
   }
 })();
