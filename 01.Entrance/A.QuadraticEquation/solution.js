@@ -1,63 +1,87 @@
 (function () {
   'use strict';
 
-  function QuadraticEquation(form) {
+  function QuadraticEquation(a, b, c) {
     if (!(this instanceof QuadraticEquation)) {
       throw new Error('Missing "new" keyword.');
     }
 
-    this.form = form;
-    this.a = form.a;
-    this.b = form.b;
-    this.c = form.c;
-    this.output = form.out;
+    if (arguments.length < 3) {
+      throw new TypeError('Not enough arguments to QuadraticEquation');
+    }
 
-    this.form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      this.solve();
-    }.bind(this));
+    this.a = parseFloat(a);
+    this.b = parseFloat(b);
+    this.c = parseFloat(c);
+
+    if (isNaN(a + b + c)) {
+      throw new TypeError('Invalid input data.');
+    } else if (a == 0) {
+      throw new TypeError("The first coefficient can't be equal to 0.");
+    }
+
+    this.equation = '';
+    if (this.a != 1) this.equation += this.a;
+    this.equation +=  'x<sup>2</sup>';
+    if (this.b) {
+      this.equation += ' + ';
+      if (this.b != 1) this.equation += this.b;
+      this.equation += 'x';
+    }
+    if (this.c) this.equation += ' + ' + this.c;
+    this.equation += ' = 0';
   }
 
   QuadraticEquation.prototype.solve = function () {
-    var a, b, c,
-        discriminant,
+    var discriminant,
         roots,
         solution;
 
-    a = parseFloat(this.a.value);
-    b = parseFloat(this.b.value);
-    c = parseFloat(this.c.value);
+    discriminant = Math.pow(this.b, 2) - 4 * this.a * this.c;
 
-    if (isNaN(a + b + c)) {
-      solution = 'Invalid input data.';
-    } else if (a === 0) {
-      solution = "The first coefficient can't be equal to 0.";
-    } else {
-      discriminant = Math.pow(b, 2) - 4 * a * c;
-
-      if (discriminant < 0) {
-        solution = 'No roots';
-      }
-
-      if (discriminant === 0) {
-        roots = -b / (2 * a);
-        solution = 'x<sub>1</sub> = x<sub>2</sub> = ' + roots;
-      }
-
-      if (discriminant > 0) {
-        roots = [
-          (-b + Math.sqrt(discriminant)) / (2 * a),
-          (-b - Math.sqrt(discriminant)) / (2 * a)
-        ];
-        solution = 'x<sub>1</sub> = ' + roots[0] + '<br>x<sub>2</sub> = ' + roots[1];
-      }
+    if (discriminant < 0) {
+      solution = 'No roots';
     }
 
-    this.output.innerHTML = solution;
+    if (discriminant === 0) {
+      roots = -this.b / (2 * this.a);
+      solution = 'x<sub>1</sub> = x<sub>2</sub> = ' + roots;
+    }
+
+    if (discriminant > 0) {
+      roots = [
+        (-this.b + Math.sqrt(discriminant)) / (2 * this.a),
+        (-this.b - Math.sqrt(discriminant)) / (2 * this.a)
+      ];
+      solution = 'x<sub>1</sub> = ' + roots[0] + '<br>x<sub>2</sub> = ' + roots[1];
+    }
+
+    return solution;
   };
 
   window.onload = function () {
-    var form = document.forms.equation;
-    new QuadraticEquation(form);
+    var form   = document.forms.equation,
+        inputA = form.a,
+        inputB = form.b,
+        inputC = form.c,
+        output = form.out;
+
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      if (!inputA.value) inputA.value = 0;
+      if (!inputB.value) inputB.value = 0;
+      if (!inputC.value) inputC.value = 0;
+
+      output.innerHTML = '';
+
+      try {
+        var solver = new QuadraticEquation(inputA.value, inputB.value, inputC.value);
+        output.innerHTML += 'The equation: ' + solver.equation + '<br>';
+        output.innerHTML += solver.solve();
+      } catch (e) {
+        output.innerHTML = e.message;
+      }
+    });
   }
 })();
