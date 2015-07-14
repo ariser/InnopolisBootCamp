@@ -191,20 +191,22 @@
       var contest = new Contest(roundsNumber);
 
       contest.subscribe('playersInited', function (players) {
+        var summary = '';
         players.forEach(function (player) {
-          console.log('Player ' + player.name + ': ' + player.strategyName);
+          summary += 'Player ' + player.name + ': ' + player.strategyName;
         });
+        postMessage(summary);
       });
 
       contest.subscribe('roundStart', function (roundIndex, isLast) {
-        console.log(isLast ? 'Final' : 'Round ' + roundIndex + '');
+        postMessage(isLast ? 'Final' : 'Round ' + roundIndex + '');
         if (isLast) {
           postMessage('done');
         }
       });
 
       contest.subscribe('roundPlayed', function (playerOne, playerTwo, winner) {
-        console.log('Player ' + playerOne.name + ' vs Player ' + playerTwo.name + '. Player ' + winner.name + ' wins!');
+        postMessage('Player ' + playerOne.name + ' vs Player ' + playerTwo.name + '. Player ' + winner.name + ' wins!');
       });
 
       contest.play();

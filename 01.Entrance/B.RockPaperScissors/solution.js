@@ -17,7 +17,7 @@
         indicator.hidden = true;
         output.innerHTML += 'Done. Please see the result in the browser console (Ctrl+Shift+I).';
       } else {
-        output.innerHTML += e.data + '<br>';
+        console.log(e.data);
       }
     };
 
@@ -26,6 +26,7 @@
 
       output.innerHTML = '';
       indicator.hidden = false;
+      console.clear();
       worker.postMessage(input.value);
     });
   }
