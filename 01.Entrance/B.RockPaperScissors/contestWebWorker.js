@@ -173,7 +173,7 @@
 
         game               = new Game(playerOne, playerTwo);
 
-    while (playerOneVictories !== 2 && playerTwoVictories !== 2) {
+    while (playerOneVictories < 2 && playerTwoVictories < 2) {
       if (game.play() === playerOne) {
         playerOneVictories += 1;
       } else if (game.play() === playerTwo) {
