@@ -69,7 +69,8 @@
     this.playerTwo = playerTwo;
   }
 
-  Game.prototype.getWinner = function () {
+  // returns winner
+  Game.prototype.play = function () {
     var playerOneFigure = this.playerOne.getFigure(),
         playerTwoFigure = this.playerTwo.getFigure();
 
@@ -172,10 +173,10 @@
 
         game               = new Game(playerOne, playerTwo);
 
-    while (Math.abs(playerOneVictories - playerTwoVictories) < 2) {
-      if (game.getWinner() === playerOne) {
+    while (playerOneVictories !== 2 && playerTwoVictories !== 2) {
+      if (game.play() === playerOne) {
         playerOneVictories += 1;
-      } else if (game.getWinner() === playerTwo) {
+      } else if (game.play() === playerTwo) {
         playerTwoVictories += 1;
       }
     }
