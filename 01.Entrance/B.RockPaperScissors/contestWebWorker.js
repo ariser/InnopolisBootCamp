@@ -171,12 +171,14 @@
     var playerOneVictories = 0,
         playerTwoVictories = 0,
 
-        game               = new Game(playerOne, playerTwo);
+        game               = new Game(playerOne, playerTwo),
+        gameWinner;
 
     while (playerOneVictories < 2 && playerTwoVictories < 2) {
-      if (game.play() === playerOne) {
+      gameWinner = game.play();
+      if (gameWinner === playerOne) {
         playerOneVictories += 1;
-      } else if (game.play() === playerTwo) {
+      } else if (gameWinner === playerTwo) {
         playerTwoVictories += 1;
       }
     }
